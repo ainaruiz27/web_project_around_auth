@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory,Redirect } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
@@ -103,20 +103,13 @@ function App() {
       getUserInfo(token);
     }
 
-    /*
-    api.getCards().then(cards => {
-      setCards(cards)
-    })
-    api.getUserInfo().then(user => {
-      setcurrentuser(user);
-    })*/
   }, [])
 
   const handleLogin = ({ email, password }) => {
     return auth.login(email, password).then(({ token, message }) => {
       if (!!token) {
         localStorage.setItem('token', token);
-        getUserInfo();
+        getUserInfo(token);
       } else {
         setOpenTooltip(true);
         setTootltipMessage(message);
@@ -152,6 +145,7 @@ function App() {
       })
       api.getUserInfo().then(user => {
         setcurrentuser(user);
+        history.push('/home')
       })
     })
   }
@@ -186,6 +180,7 @@ function App() {
             <Route path="/register">
               <Register handleSubmit={handleRegister} />
             </Route>
+            <Redirect to ='/login'/>
           </Switch>
           <Footer />
 
